@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width,target-density,dpi=device-dpi" />
+        
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        
+        <title>QMileT</title>
+        <!-- Owner: Andy Manivong o/a Point707 Technologies -->
+        <!-- Edited: October 6th, 2015 -->
+    </head>
+    <body id="mainBody">
+        <div id="safety">            
+            <h4>You, the current user, must read and agree to <u>all</u> of the terms listed below before using this application. If you do not agree to <u>all</u> of the terms, close this application immediately.</h4>
+            
+            <b>1.</b> There is no guarantee of <u>reliability</u> and/or <u>accuracy</u> of the data displayed, and of the application itself.<BR/>
+            
+            <b>2.</b> The developers do not guarantee and/or assume responsibility for any incorrect data displayed in this application.<BR/>
+            
+            <b>3.</b> You will <u>not</u> view and/or use this application while operating any type of motorized and/or non-motorized vehicle. You will view and operate this application only when at a safe stop and location.<BR/>
+            
+            <b>4.</b> You will abide by all <u>laws</u> and <u>rules</u> which have been set for the location in which you are currently located and using this application. <BR/>
+            
+            <b>5.</b> You are solely responsible and relieve all others of any liability for any type of injury and/or damages incurred while using this application. <BR/>
+            
+            <b>6.</b> You will <u>not</u> use this application while on public roads.<BR/>
+            
+            <b>7.</b> You acknowledge this application requires a data connection and accept responsibility for any and all charges that may incur.<BR/>
+            
+            <b>8.</b> Your geolocation data is not shared or stored, it is only used for calculation purposes during application runtime.<BR/>
+            
+            <!-- <h4>You, the current user, must read and agree to <u>all</u> of the terms listed above before using this application. If you do not agree to <u>all</u> of the terms, close this application immediately.</h4> -->
+            
+            <BR/><button onclick="accept();"><b>I Agree</b></button>
+            
+            <BR/><BR/>
+            
+            <img class="accessory" onclick="direct_news();" id="newsNav2" src="img/news.png"/><BR/> <!-- NEWS -->
+        </div>
+        
+        <div id="popUpDiv"></div>
+        <table id="timeTable"></table>
+        <div class="logo" onclick="redirect();"><img class="logoImg" src="img/logo.png"/></div>
+            
+        <!-- Main Data Displays -->
+        <table class="spd_table">
+            <tr>
+                <td width="10%" style="font-size: 10px;">
+                    <button class="arm" disabled id="armBTN"  onclick="resetAll();"></button> <BR/>
+                    <button class="saveAlertStop" disabled id="saveBTN" onclick="saveTime();"></button> <BR/>
+                    <button class="review" onclick="readTime();"></button>
+                </td>
+                <td width="80%" id="spdDiv" onclick="toggleSpd();">
+                
+                </td>
+                <td width="10%" style="font-size:10px;">
+                    <!-- <img class="accessory" onclick="" src="img/locGood.png"/><BR/> --> <!-- LOCATION SERVICES -->
+                    <img class="accessory" onclick="redirect_ig();" src="img/ig.png"/><BR/> <!-- INSTAGRAM -->
+                    <img class="accessory" onclick="redirect_fb();" src="img/fb.png"/><BR/> <!-- FACEBOOK -->
+                    <img class="accessory" onclick="direct_news();" id="newsNav" src="img/news.png"/><BR/> <!-- NEWS -->
+                    <img class="accessory" onclick="QMTC();" src="img/QMTCad.png"/><BR/> <!-- QMTC -->
+                    <!-- <img class="accessory" onclick="" src="img/help.png"/> --> <!-- HELP -->
+                </td>
+            </tr>
+        </table>
+        
+        <table class="dspData">
+            <tr>
+                <td width="20%" style="text-align:right;">1/4<sub>Mile</sub></td>
+                <td width="80%" id="qMile">
+                    <img class="flags" src="img/timer.png"/> Ready!
+                </td>
+            </tr>
+            <tr>
+                <td width="20%" style="text-align:right;">0-60<sub>mph</sub></td>
+                <td width="80%" id="zSix">
+                    <img class="flags" src="img/timer.png"/> Ready!
+                </td>
+            </tr>
+            <tr>
+                <td width="20%" style="text-align:right;">0-100<sub>mph</sub></td>
+                <td width="80%" id="zHund">
+                    <img class="flags" src="img/timer.png"/> Ready!
+                </td>
+            </tr>
+        </table>
+        <!-- Main Data Displays^^ -->
+        
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <script type="text/javascript">
+            //window.location.href = "news.html"; //temporary
+            
+            //allow time for device to be ready. not using eventListener because image will not update before "I Agree" function
+            setTimeout(checkNews,2500);
+           
+            var watchID = null;
+            
+            function onReady(){
+                //Reset all flags
+                window.localStorage.setItem("flag",0)
+                window.localStorage.setItem("qFlag",0)
+                window.localStorage.setItem("qLat",0);
+                window.localStorage.setItem("qLon",0);
+                window.localStorage.setItem("hFlag",0);
+                window.localStorage.setItem("stopReset",0);
+                window.localStorage.setItem("notClear",1);
+                
+                //run functions
+                checkNews();
+                setSpd();
+                
+                watchID = null;
+                watchID = navigator.geolocation.watchPosition(onSuccess, onError, {maximumAge: 100,timeout:5000, enableHighAccuracy: true});
+            }
+            function onPause(){
+                navigator.geolocation.clearWatch(watchID);
+                console.log("Pause");
+            }
+            function onResume(){
+                watchID = navigator.geolocation.watchPosition(onSuccess, onError, {timeout:5000});
+                console.log("Resume");
+            }
+            function getLoc(){
+                watchID = null;
+                watchID = navigator.geolocation.watchPosition(onSuccess, onError, {maximumAge: 100,timeout:5000, enableHighAccuracy: true});
+                //console.log("getLoc");
+            }
+            //incBG(1);
+        </script>
+    </body>
+</html>

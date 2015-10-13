@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *"> -->
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <title>QMT Converter</title>
+        <!-- Owner: Andy Manivong o/a Point707 Technologies -->
+        <!-- Edited: September 6th, 2015 -->
+    </head>
+    
+    <body>
+        <h1 id="ftLbs_label">ft/lbs</h1>
+        <input class="ip_power" placeholder="Enter Value" type="number" id="torqueFTLBS" onchange="convertTorque(0);"/>
+        <BR/><BR/>
+        <h1 id="inLbs_label">in/lbs</h1>
+        <input class="ip_power" placeholder="Enter Value" type="number" id="torqueINLBS" onchange="convertTorque(1);"/>
+        <BR/><BR/>
+        <h1 id="nm_label">n/m</h1>
+        <input class="ip_power" placeholder="Enter Value" type="number" id="torqueNM" onchange="convertTorque(2);"/>
+        <BR/><BR/>
+        <a href="index.html">Back</a>
+        <BR/><BR/>
+    </body>
+    <script>
+        document.addEventListener("deviceready", deviceReady, false);
+        function deviceReady(){
+            moveLabelTorque();
+        }
+    </script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/torque.js"></script>
+</html>
