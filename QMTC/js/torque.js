@@ -1,5 +1,5 @@
 /* Owner: Andy Manivong o/a Point707 Technologies */
-/* Edited: September 6th, 2015 */
+/* Edited: September 6th, 2015  */
 
 function convertTorque(unit){
     var ftLbs = document.getElementById("torqueFTLBS");
